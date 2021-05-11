@@ -1,0 +1,5 @@
+{
+    "singleQuote": true,
+    "eslint-disable-next-line":false,
+    "printWidth": 100
+}

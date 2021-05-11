@@ -29,7 +29,8 @@
       </el-col>
     </el-row>
     <!--list-->
-    <el-table :data="tableData4" stripe style="width: 100%">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="index" label="序号" />
       <el-table-column prop="typeId" label="商品编码"></el-table-column>
       <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
       <el-table-column prop="typeName" align="center" label="种类名称"></el-table-column>
@@ -41,34 +42,23 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
 
-  <!-- <el-pagination
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    :current-page="currentPage4"
-    :page-sizes="[10, 20, 50, 100]"
-    :page-size="100"
-    layout="total, sizes, prev, pager, next, jumper"
-    :total="300"
-  ></el-pagination> -->
+    <pagination :total="total" :page.sync="pageIndex" :limit.sync="pageSize" @pagination="init()"></pagination>
+  </div>
 </template>
 <script>
+import Pagination from '../common/pagination.vue';
 export default {
+  components: { Pagination },
   data() {
     return {
-      //tableData4: [],
-      tableData4: new Array(15).fill({
-        id: "10000da",
-        typeId: "2123",
-        name: "测试商品",
-        TypeName: "手机",
-        unit: "个",
-        specification: 789023,
-      }),
+      tableData: [],
       form: {
-        name: "",
+        name: '',
       },
+      total: 15,
+      pageIndex: 1,
+      pageSize: 10,
     };
   },
   mounted() {
@@ -78,6 +68,14 @@ export default {
   methods: {
     init() {
       // todo 获取数据
+      this.tableData = new Array(15).fill({
+        id: '10000da',
+        typeId: '2123',
+        name: '测试商品',
+        TypeName: '手机',
+        unit: '个',
+        specification: 789023,
+      });
     },
     onSubmit() {
       // 查询框
@@ -86,12 +84,6 @@ export default {
     edit(id) {
       // 编辑数据
       console.log(id);
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
     },
   },
 };
