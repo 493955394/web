@@ -71,16 +71,9 @@ export default {
       var queryInfo = { pageNum: this.pageNum, pageSize: this.pageSize };
       // todo 获取数据
       API.query(queryInfo).then((res) => {
-        console.log(res);
+        this.tableData = res.list;
+        this.total = res.total;
       });
-      // this.tableData = new Array(15).fill({
-      //   id: '10000da',
-      //   typeId: '2123',
-      //   name: '测试商品',
-      //   TypeName: '手机',
-      //   unit: '个',
-      //   specification: 789023,
-      // });
     },
     onSubmit() {
       // 查询框
