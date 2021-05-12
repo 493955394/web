@@ -43,11 +43,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination :total="total" :page.sync="pageIndex" :limit.sync="pageSize" @pagination="init()"></pagination>
+    <pagination :total="total" :page.sync="pageNum" :limit.sync="pageSize" @pagination="init()"></pagination>
   </div>
 </template>
 <script>
 import Pagination from '../common/pagination.vue';
+import API from '../../api/merchandise';
 export default {
   components: { Pagination },
   data() {
@@ -56,8 +57,8 @@ export default {
       form: {
         name: '',
       },
-      total: 15,
-      pageIndex: 1,
+      total: 0,
+      pageNum: 1,
       pageSize: 10,
     };
   },
@@ -67,15 +68,19 @@ export default {
   },
   methods: {
     init() {
+      var queryInfo = { pageNum: this.pageNum, pageSize: this.pageSize };
       // todo 获取数据
-      this.tableData = new Array(15).fill({
-        id: '10000da',
-        typeId: '2123',
-        name: '测试商品',
-        TypeName: '手机',
-        unit: '个',
-        specification: 789023,
+      API.query(queryInfo).then((res) => {
+        console.log(res);
       });
+      // this.tableData = new Array(15).fill({
+      //   id: '10000da',
+      //   typeId: '2123',
+      //   name: '测试商品',
+      //   TypeName: '手机',
+      //   unit: '个',
+      //   specification: 789023,
+      // });
     },
     onSubmit() {
       // 查询框
