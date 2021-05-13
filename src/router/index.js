@@ -5,7 +5,7 @@ import Dashboard from '@/components/Dashboard';
 import Main from '@/components/Main';
 
 // 个人事务
-import Todo from '@/components/person/Todo';
+import MechandiseManage from '@/components/person/MechandiseManage';
 import Timelist from '@/components/person/Timelist';
 
 //公文管理
@@ -63,9 +63,9 @@ let router = new Router({
           component: Main
         },
         {
-          path: '/person/todo',
-          component: Todo,
-          name: '待办事项',
+          path: '/person/mechandiseManage',
+          component: MechandiseManage,
+          name: '商品信息',
           menuShow: true
         },
         {

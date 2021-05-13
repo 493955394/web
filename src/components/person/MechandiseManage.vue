@@ -13,9 +13,9 @@
       <el-col :span="12">
         <!--serach-->
         <div class="oa_search">
-          <el-form :inline="true" :model="form" class="demo-form-inline">
+          <el-form :inline="true" :model="query" class="demo-form-inline">
             <el-form-item label="商品查询">
-              <el-input v-model="form.name" placeholder="请输入查询条件"></el-input>
+              <el-input v-model="query.name" placeholder="请输入查询条件"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -38,28 +38,49 @@
       <el-table-column prop="specification" align="center" label="规格"></el-table-column>
       <el-table-column fixed="right" align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="edit(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="edit(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination :total="total" :page.sync="pageNum" :limit.sync="pageSize" @pagination="init()"></pagination>
+    <merchandise-edit
+      :configVisible.sync="dialog.visible"
+      v-if="dialog.visible"
+      :configInfo="dialog.configInfo"
+      :title="dialog.title"
+      :action="dialog.action"
+      @reload="init()"
+    ></merchandise-edit>
+
+    <pagination
+      :total="total"
+      :page.sync="query.pageNum"
+      :limit.sync="query.pageSize"
+      @pagination="init()"
+    ></pagination>
   </div>
 </template>
 <script>
 import Pagination from '../common/pagination.vue';
 import API from '../../api/merchandise';
+import MerchandiseEdit from './MerchandiseEdit.vue';
 export default {
-  components: { Pagination },
+  components: { Pagination, MerchandiseEdit },
   data() {
     return {
       tableData: [],
-      form: {
+      query: {
         name: '',
+        pageNum: 1,
+        pageSize: 10,
       },
       total: 0,
-      pageNum: 1,
-      pageSize: 10,
+      dialog: {
+        title: '',
+        action: '',
+        visible: false,
+        configInfo: {},
+      },
     };
   },
   mounted() {
@@ -68,20 +89,25 @@ export default {
   },
   methods: {
     init() {
-      var queryInfo = { pageNum: this.pageNum, pageSize: this.pageSize };
       // todo 获取数据
-      API.query(queryInfo).then((res) => {
+      API.query(this.query).then((res) => {
         this.tableData = res.list;
         this.total = res.total;
       });
     },
     onSubmit() {
       // 查询框
-      console.log(this.form);
+      this.query.pageNum = 1;
+      this.init();
     },
-    edit(id) {
+    edit(row) {
       // 编辑数据
-      console.log(id);
+      this.dialog = {
+        title: '编辑商品信息',
+        action: 'edit',
+        visible: true,
+        configInfo: Object.assign({}, row),
+      };
     },
   },
 };

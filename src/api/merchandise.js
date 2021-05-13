@@ -5,5 +5,10 @@ export default {
   query: params => {
     return API.POST('/api/merchandiseAPIController/query', params)
   },
+
+  //编辑
+  edit: params => {
+    return API.POST('/api/merchandiseAPIController/edit', params)
+  },
   
 }
